@@ -1,2 +1,0 @@
-model_checkpoint_path: "conv.ckpt-100"
-all_model_checkpoint_paths: "conv.ckpt-100"
