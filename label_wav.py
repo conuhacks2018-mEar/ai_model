@@ -34,6 +34,7 @@ from __future__ import print_function
 import argparse
 import sys
 from os.path import isfile, join, isdir
+from os import listdir
 
 import tensorflow as tf
 
@@ -100,7 +101,7 @@ def _label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
 
 """ wrapper around label_way """
 def label_output(wav):
-  return run_graph(wav, 'train/conv_labels.txt', 'wav_data:0', 'labels_softmax:0', 3)
+  return run_graph(wav, 'train/conv_labels.txt', 'wav_data:0', 'labels_softmax:0', 1)
 
 
 def label_wav(wav_file=None):
@@ -110,12 +111,13 @@ def label_wav(wav_file=None):
   graph = 'my_frozen_graph.pb'
   input_name = 'wav_data:0'
   output_name = 'labels_softmax:0'
-  how_many_labels = 8
+  how_many_labels = 1
   
   return _label_wav(wav, labels, graph, input_name, output_name, how_many_labels)
 
-def label_test():
+if __name__ == "__main__":
+  print("test: \n")
   testpath = "test-audio/"
-  onlyfiles = [f for f in listdir(testpath) if isfile(join(testpath, f))]
+  onlyfiles = [f for f in listdir(testpath) if f != ".DS_Store"]
   for f in onlyfiles:
     print(f, label_wav(join(testpath, f)))
