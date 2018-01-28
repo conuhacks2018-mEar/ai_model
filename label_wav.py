@@ -33,6 +33,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+from os.path import isfile, join, isdir
 
 import tensorflow as tf
 
@@ -113,4 +114,8 @@ def label_wav(wav_file=None):
   
   return _label_wav(wav, labels, graph, input_name, output_name, how_many_labels)
 
-print(label_wav())
+def label_test():
+  testpath = "test-audio/"
+  onlyfiles = [f for f in listdir(testpath) if isfile(join(testpath, f))]
+  for f in onlyfiles:
+    print(f, label_wav(join(testpath, f)))
