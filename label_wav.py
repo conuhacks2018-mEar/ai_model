@@ -104,11 +104,13 @@ def label_output(wav):
 
 def label_wav(wav_file=None):
   """Entry point for script, converts flags to arguments."""
-  wav = wav_file or 'test-audio/dog.wav'
+  wav = wav_file or 'test-audio/gunshot.wav'
   labels = 'train/conv_labels.txt'
   graph = 'my_frozen_graph.pb'
   input_name = 'wav_data:0'
   output_name = 'labels_softmax:0'
-  how_many_labels = 1
-
+  how_many_labels = 8
+  
   return _label_wav(wav, labels, graph, input_name, output_name, how_many_labels)
+
+print(label_wav())

@@ -351,7 +351,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--clip_duration_ms',
       type=int,
-      default=1000,
+      default=4000,
       help='Expected duration in milliseconds of the wavs',)
   parser.add_argument(
       '--window_size_ms',
@@ -396,7 +396,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--wanted_words',
       type=str,
-      default='yes,no,up,down,left,right,on,off,stop,go',
+      default='air_conditioner,car_horn,children_playing,dog_bark,drilling,engine_idling,gun_shot,jackhammer,siren,street_music',
       help='Words to use (others will be added to an unknown label)',)
   parser.add_argument(
       '--train_dir',
