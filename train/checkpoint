@@ -1,4 +1,2 @@
-model_checkpoint_path: "conv.ckpt-1100"
-all_model_checkpoint_paths: "conv.ckpt-900"
-all_model_checkpoint_paths: "conv.ckpt-1000"
-all_model_checkpoint_paths: "conv.ckpt-1100"
+model_checkpoint_path: "conv.ckpt-1400"
+all_model_checkpoint_paths: "conv.ckpt-1400"
