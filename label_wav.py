@@ -73,7 +73,7 @@ def run_graph(wav_data, labels, input_layer_name, output_layer_name,
     for node_id in top_k:
       results[labels[node_id]] = predictions[node_id]
 
-    return results
+    return print(results)
 
 
 def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
@@ -95,23 +95,26 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
   with open(wav, 'rb') as wav_file:
     wav_data = wav_file.read()
 
-  return run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
+  run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
+
+""" wrapper around label_way """
+def label_output(wav):
+  return run_graph(wav, 'train/conv_labels.txt', 'wav_data:0', 'labels_softmax:0', 3)
 
 
 def main(_):
   """Entry point for script, converts flags to arguments."""
-  return label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
+  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
             FLAGS.output_name, FLAGS.how_many_labels)
-
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      '--wav', type=str, default='', help='Audio file to be identified.')
+      '--wav', type=str, default='test-audio/dog.wav', help='Audio file to be identified.')
   parser.add_argument(
-      '--graph', type=str, default='', help='Model to use for identification.')
+      '--graph', type=str, default='my_frozen_graph.pb', help='Model to use for identification.')
   parser.add_argument(
-      '--labels', type=str, default='', help='Path to file containing labels.')
+      '--labels', type=str, default='train/conv_labels.txt', help='Path to file containing labels.')
   parser.add_argument(
       '--input_name',
       type=str,
