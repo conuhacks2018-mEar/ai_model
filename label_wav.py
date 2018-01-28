@@ -73,10 +73,10 @@ def run_graph(wav_data, labels, input_layer_name, output_layer_name,
     for node_id in top_k:
       results[labels[node_id]] = predictions[node_id]
 
-    return print(results)
+    return results
 
 
-def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
+def _label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
   """Loads the model and labels, and runs the inference to print predictions."""
   if not wav or not tf.gfile.Exists(wav):
     tf.logging.fatal('Audio file does not exist %s', wav)
@@ -95,41 +95,20 @@ def label_wav(wav, labels, graph, input_name, output_name, how_many_labels):
   with open(wav, 'rb') as wav_file:
     wav_data = wav_file.read()
 
-  run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
+  return run_graph(wav_data, labels_list, input_name, output_name, how_many_labels)
 
 """ wrapper around label_way """
 def label_output(wav):
   return run_graph(wav, 'train/conv_labels.txt', 'wav_data:0', 'labels_softmax:0', 3)
 
 
-def main(_):
+def label_wav(wav_file=None):
   """Entry point for script, converts flags to arguments."""
-  label_wav(FLAGS.wav, FLAGS.labels, FLAGS.graph, FLAGS.input_name,
-            FLAGS.output_name, FLAGS.how_many_labels)
+  wav = wav_file or 'test-audio/dog.wav'
+  labels = 'train/conv_labels.txt'
+  graph = 'my_frozen_graph.pb'
+  input_name = 'wav_data:0'
+  output_name = 'labels_softmax:0'
+  how_many_labels = 3
 
-if __name__ == '__main__':
-  parser = argparse.ArgumentParser()
-  parser.add_argument(
-      '--wav', type=str, default='test-audio/dog.wav', help='Audio file to be identified.')
-  parser.add_argument(
-      '--graph', type=str, default='my_frozen_graph.pb', help='Model to use for identification.')
-  parser.add_argument(
-      '--labels', type=str, default='train/conv_labels.txt', help='Path to file containing labels.')
-  parser.add_argument(
-      '--input_name',
-      type=str,
-      default='wav_data:0',
-      help='Name of WAVE data input node in model.')
-  parser.add_argument(
-      '--output_name',
-      type=str,
-      default='labels_softmax:0',
-      help='Name of node outputting a prediction in the model.')
-  parser.add_argument(
-      '--how_many_labels',
-      type=int,
-      default=3,
-      help='Number of results to show.')
-
-  FLAGS, unparsed = parser.parse_known_args()
-  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+  return _label_wav(wav, labels, graph, input_name, output_name, how_many_labels)
